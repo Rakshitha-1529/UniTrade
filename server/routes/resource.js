@@ -25,20 +25,13 @@ cb(
 
 null,
 
-Date.now()
-
-+
-
-path.extname(
-
+Date.now() +
+"-" +
 file.originalname
-
-)
 
 );
 
 }
-
 });
 
 
@@ -145,7 +138,7 @@ uploadedBy: req.body.uploadedBy,
 
 fileName: req.file.filename,
 
-filePath : `/uploads/${req.file.filename}`
+filePath : `uploads/${req.file.filename}`
 
 });
 

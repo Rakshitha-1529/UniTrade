@@ -1,9 +1,6 @@
 const express = require("express");
-
 const Resource = require("../models/Resource");
-
 const Download = require("../models/Download");
-
 const router = express.Router();
 
 router.post("/:id", async(req,res)=>{

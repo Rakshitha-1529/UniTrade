@@ -1,82 +1,66 @@
 const express = require("express");
 
-const Chat = require("../models/Chat");
+const Message = require("../models/Message");
 
 const router = express.Router();
 
 
-// Get all messages
+// Save message
 
-router.get("/", async (req, res) => {
+router.post("/", async(req,res)=>{
 
-  try {
+try{
 
-    const chats = await Chat.find()
+const message = new Message(
 
-    .sort({
+req.body
 
-      createdAt: 1
+);
 
-    });
+await message.save();
 
-    res.json(chats);
+res.json({
 
-  }
+message:"Message saved"
 
-  catch (error) {
+});
 
-    res.status(500).json({
+}
 
-      message: error.message
+catch(error){
 
-    });
+res.status(500).json({
 
-  }
+message:error.message
+
+});
+
+}
 
 });
 
 
-// Send message
+// Chat history
 
-router.post("/", async (req, res) => {
+router.get("/", async(req,res)=>{
 
-  try {
+try{
 
-    const {
+const messages = await Message.find();
 
-      sender,
+res.json(messages);
 
-      message
+}
 
-    } = req.body;
+catch(error){
 
-    const chat = new Chat({
+res.status(500).json({
 
-      sender,
+message:error.message
 
-      message
+});
 
-    });
-
-    await chat.save();
-
-    res.status(201).json({
-
-      message: "Message sent"
-
-    });
-
-  }
-
-  catch (error) {
-
-    res.status(500).json({
-
-      message: error.message
-
-    });
-
-  }
+}
 
 });
 

@@ -1,7 +1,6 @@
 import "../styles/upload.css";
 
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
 
 function UploadResource() {
@@ -9,26 +8,20 @@ function UploadResource() {
   const navigate = useNavigate();
 
   const [resource, setResource] = useState({
-
     title: "",
-
     subject: "",
-
     category: ""
-
   });
 
   const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
 
 
   const handleChange = (e) => {
 
     setResource({
-
       ...resource,
-
       [e.target.name]: e.target.value
-
     });
 
   };
@@ -39,26 +32,24 @@ function UploadResource() {
     const selectedFile = e.target.files[0];
 
     if (!selectedFile)
-
       return;
 
 
-    // 10 MB limit
+    if (selectedFile.size > 10 * 1024 * 1024) {
+
+      alert("File must be below 10 MB");
+      return;
+
+    }
+
 
     if (
-
-      selectedFile.size >
-
-      10 * 1024 * 1024
-
+      !selectedFile.type.startsWith("image/")
+      &&
+      selectedFile.type !== "application/pdf"
     ) {
 
-      alert(
-
-        "File must be below 10 MB"
-
-      );
-
+      alert("Only images and PDF allowed");
       return;
 
     }
@@ -66,267 +57,227 @@ function UploadResource() {
 
     setFile(selectedFile);
 
+
+    // image preview
+    if(selectedFile.type.startsWith("image")){
+
+      setPreview(
+        URL.createObjectURL(selectedFile)
+      );
+
+    }
+    else{
+
+      setPreview(null);
+
+    }
+
   };
 
 
-  const handleSubmit = async (e) => {
+
+  const handleSubmit = async (e)=>{
 
     e.preventDefault();
 
 
-    const user = JSON.parse(
+    const user =
+      JSON.parse(
+        localStorage.getItem("user")
+      );
 
-      localStorage.getItem(
 
-        "user"
+    if(!user){
 
-      )
+      alert("Please login");
+      navigate("/login");
+      return;
 
+    }
+
+
+    if(!file){
+
+      alert("Select file");
+      return;
+
+    }
+
+
+
+    const formData = new FormData();
+
+
+    formData.append(
+      "title",
+      resource.title
     );
 
 
-    if (!user) {
-
-      alert(
-
-        "Please login"
-
-      );
-
-      navigate("/login");
-
-      return;
-
-    }
+    formData.append(
+      "subject",
+      resource.subject
+    );
 
 
-    if (!file) {
-
-      alert(
-
-        "Please select a file"
-
-      );
-
-      return;
-
-    }
+    formData.append(
+      "category",
+      resource.category
+    );
 
 
-    try {
-
-      const formData = new FormData();
-
-
-      formData.append(
-
-        "title",
-
-        resource.title
-
-      );
+    formData.append(
+      "uploadedBy",
+      user.name
+    );
 
 
-      formData.append(
-
-        "subject",
-
-        resource.subject
-
-      );
+    formData.append(
+      "file",
+      file
+    );
 
 
-      formData.append(
 
-        "category",
-
-        resource.category
-
-      );
+    try{
 
 
-      formData.append(
-
-        "uploadedBy",
-
-        user.name
-
-      );
-
-
-      formData.append(
-
-        "file",
-
-        file
-
-      );
-
-
-      const response = await fetch(
-
+      const response =
+      await fetch(
         "http://localhost:5000/api/resources",
-
         {
-
-          method: "POST",
-
-          body: formData
-
+          method:"POST",
+          body:formData
         }
-
       );
 
 
       const data =
-
       await response.json();
 
 
-      if (response.ok) {
 
-        alert(
+      if(response.ok){
 
-          data.message
-
-        );
+        alert("Uploaded successfully");
 
         navigate("/");
 
       }
+      else{
 
-      else {
-
-        alert(
-
-          data.message
-
-        );
+        alert(data.message);
 
       }
 
-    }
 
-    catch (error) {
+    }
+    catch(error){
 
       console.log(error);
 
-      alert(
-
-        "Upload failed"
-
-      );
+      alert("Upload failed");
 
     }
+
 
   };
 
 
-  return (
 
-    <div className="upload-container">
+return (
 
-      <h2>
-
-        Upload Resource
-
-      </h2>
+<div className="upload-container">
 
 
-      <form onSubmit={handleSubmit}>
+<h2>
+Upload Resource
+</h2>
 
 
-        <input
-
-          type="text"
-
-          name="title"
-
-          placeholder="Resource Title"
-
-          onChange={handleChange}
-
-          required
-
-        />
+<form onSubmit={handleSubmit}>
 
 
-        <input
-
-          type="text"
-
-          name="subject"
-
-          placeholder="Subject"
-
-          onChange={handleChange}
-
-          required
-
-        />
+<input
+type="text"
+name="title"
+placeholder="Resource Title"
+onChange={handleChange}
+required
+/>
 
 
-        <select
-
-          name="category"
-
-          onChange={handleChange}
-
-          required
-
-        >
-
-          <option value="">
-
-            Select Category
-
-          </option>
-
-          <option value="Notes">
-
-            Notes
-
-          </option>
-
-          <option value="Book">
-
-            Books
-
-          </option>
-
-          <option value="Question Paper">
-
-            Question Papers
-
-          </option>
-
-        </select>
+<input
+type="text"
+name="subject"
+placeholder="Subject"
+onChange={handleChange}
+required
+/>
 
 
-        <input
 
-          type="file"
+<select
+name="category"
+onChange={handleChange}
+required
+>
 
-          accept=".pdf,image/*"
+<option value="">
+Select Category
+</option>
 
-          onChange={handleFileChange}
+<option value="Notes">
+Notes
+</option>
 
-          required
+<option value="Book">
+Book
+</option>
 
-        />
+<option value="Question Paper">
+Question Paper
+</option>
+
+</select>
 
 
-        <button type="submit">
 
-          Upload
+<input
+type="file"
+accept="image/*,.pdf"
+onChange={handleFileChange}
+required
+/>
 
-        </button>
 
-      </form>
+{
+preview && (
 
-    </div>
+<img
+src={preview}
+className="upload-preview"
+alt="preview"
+/>
 
-  );
+)
+
+}
+
+
+
+<button type="submit">
+Upload
+</button>
+
+
+</form>
+
+
+</div>
+
+);
+
 
 }
 
