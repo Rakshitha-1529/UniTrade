@@ -17,9 +17,12 @@ function Navbar() {
 
     const logout = () => {
 
-        localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("isLoggedIn");
 
-        navigate("/login");
+    localStorage.removeItem("user");
+
+    navigate("/login");
+
     };
 
     return (

@@ -1,200 +1,399 @@
-import { useContext } from "react";
+import {
+  useContext,
+  useEffect,
+  useState
+} from "react";
+
 import { SearchContext } from "../context/SearchContext";
+
 import "../styles/dashboard.css";
+
 function Dashboard() {
 
-    const user =
-        JSON.parse(
-            localStorage.getItem("user")
-        );
+  const user = JSON.parse(
 
-    const resources =
-        JSON.parse(
-            localStorage.getItem("resources")
-        ) || [];
-    const {
+    localStorage.getItem("user")
+
+  );
+
+  const [resources, setResources] = useState([]);
+
+  const {
+
     searchTerm,
+
     filter
-} = useContext(SearchContext);
 
-const filteredResources =
-    resources.filter((resource) => {
+  } = useContext(SearchContext);
 
-        const matchesSearch =
-            resource.title
-                .toLowerCase()
-                .includes(
-                    searchTerm.toLowerCase()
-                );
 
-        const matchesFilter =
-            filter === "All" ||
-            resource.category === filter;
+  // Fetch resources from MongoDB
 
-        return (
-            matchesSearch &&
-            matchesFilter
-        );
+  useEffect(() => {
+
+    fetch(
+
+      "http://localhost:5000/api/resources"
+
+    )
+
+    .then(res => res.json())
+
+    .then(data => setResources(data))
+
+    .catch(error => {
+
+      console.log(error);
+
     });
-    return (
 
-        <div className="dashboard">
+  }, []);
 
-            <h1>
-                Welcome, {user?.name} 👋
-            </h1>
 
-            {/* Stats */}
+  const filteredResources = resources.filter(
 
-         <div className="stats-container">
+    (resource) => {
 
-    <div className="stat-card">
+      const matchesSearch =
 
-        <h2>
+        resource.title
+
+        .toLowerCase()
+
+        .includes(
+
+          searchTerm.toLowerCase()
+
+        );
+
+      const matchesFilter =
+
+        filter === "All" ||
+
+        resource.category === filter;
+
+      return (
+
+        matchesSearch &&
+
+        matchesFilter
+
+      );
+
+    }
+
+  );
+
+
+  return (
+
+    <div className="dashboard">
+
+      <h1>
+
+        Welcome, {user?.name} 👋
+
+      </h1>
+
+
+      {/* Stats */}
+
+      <div className="stats-container">
+
+        <div className="stat-card">
+
+          <h2>
+
             {resources.length}
-        </h2>
 
-        <p>
+          </h2>
+
+          <p>
+
             Resources
-        </p>
 
-    </div>
+          </p>
 
-    <div className="stat-card">
+        </div>
 
-        <h2>
+
+        <div className="stat-card">
+
+          <h2>
+
             {
-                resources.filter(
-                    r =>
-                    r.category === "Book"
-                ).length
-            }
-        </h2>
 
-        <p>
+              resources.filter(
+
+                r =>
+
+                r.category === "Book"
+
+              ).length
+
+            }
+
+          </h2>
+
+          <p>
+
             Books
-        </p>
 
-    </div>
+          </p>
 
-    <div className="stat-card">
+        </div>
 
-        <h2>
+
+        <div className="stat-card">
+
+          <h2>
+
             {
-                resources.filter(
-                    r =>
-                    r.category === "Notes"
-                ).length
+
+              resources.filter(
+
+                r =>
+
+                r.category === "Notes"
+
+              ).length
+
             }
-        </h2>
 
-        <p>
+          </h2>
+
+          <p>
+
             Notes
-        </p>
 
-    </div>
+          </p>
 
-    <div className="stat-card">
+        </div>
 
-        <h2>
+
+        <div className="stat-card">
+
+          <h2>
+
             0
-        </h2>
+
+          </h2>
+
+          <p>
+
+            Notifications
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      {/* Resources */}
+
+      <h2>
+
+        Recently Uploaded Resources
+
+      </h2>
+
+
+      {resources.length === 0 ? (
 
         <p>
-            Notifications
+
+          No resources uploaded yet.
+
         </p>
 
-    </div>
+      ) : (
 
-</div>
-            {/* Resources */}
+        <div className="resource-grid">
 
-            <h2>
-                Recently Uploaded Resources
-            </h2>
+          {filteredResources.map(
 
-            {resources.length === 0 ? (
+            (resource) => (
 
-                <p>
-                    No resources uploaded yet.
-                </p>
+            <div
 
-            ) : (
+              key={resource._id}
 
-                <div className="resource-grid">
+              className="resource-card"
 
-                    {filteredResources.map((resource) => (
+            >
 
-                        <div
-                            key={resource.id}
-                            className="resource-card"
-                        >
+              <h3>
 
-                            <h3>
-                                {resource.title}
-                            </h3>
+                {resource.title}
 
-                            <p>
-                                <strong>Subject:</strong>{" "}
-                                {resource.subject}
-                            </p>
+              </h3>
 
-                            <p>
-                                <strong>Category:</strong>{" "}
-                                {resource.category}
-                            </p>
 
-                            <p>
-                                <strong>Uploaded By:</strong>{" "}
-                                {resource.uploadedBy}
-                            </p>
+              <p>
 
-                            {/* Image Preview */}
+                <strong>
 
-                            {resource.fileType?.startsWith("image") ? (
+                  Subject:
 
-                                <img
-                                    src={resource.fileData}
-                                    alt={resource.title}
-                                    style={{
-                                        width: "100%",
-                                        borderRadius: "8px",
-                                        marginTop: "10px"
-                                    }}
-                                />
+                </strong>{" "}
 
-                            ) : (
+                {resource.subject}
 
-                                <div
-                                    style={{
-                                        marginTop: "10px",
-                                        marginBottom: "10px"
-                                    }}
-                                >
-                                    📄 PDF Document
-                                </div>
+              </p>
 
-                            )}
 
-                            <a
-                                href={resource.fileData}
-                                download={resource.fileName}
-                            >
-                                <button>
-                                    Download
-                                </button>
-                            </a>
+              <p>
 
-                        </div>
+                <strong>
 
-                    ))}
+                  Category:
+
+                </strong>{" "}
+
+                {resource.category}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+
+                  Uploaded By:
+
+                </strong>{" "}
+
+                {resource.uploadedBy}
+
+              </p>
+
+
+              <p>
+
+                <strong>
+
+                  Downloads:
+
+                </strong>{" "}
+
+                {resource.downloads}
+
+              </p>
+
+
+              {/* Image Preview */}
+
+              {resource.fileType?.startsWith(
+
+                "image"
+
+              ) ? (
+
+                <img
+
+                  src={resource.fileData}
+
+                  alt={resource.title}
+
+                  style={{
+
+                    width: "100%",
+
+                    borderRadius: "8px",
+
+                    marginTop: "10px"
+
+                  }}
+
+                />
+
+              ) : (
+
+                <div
+
+                  style={{
+
+                    marginTop: "10px",
+
+                    marginBottom: "10px"
+
+                  }}
+
+                >
+
+                  📄 PDF Document
 
                 </div>
 
-            )}
+              )}
+
+
+              <button
+
+onClick={async()=>{
+
+try{
+
+await fetch(
+
+`http://localhost:5000/api/resources/download/${resource._id}`,
+
+{
+
+method:"PUT"
+
+}
+
+);
+
+const downloadUrl=
+
+`http://localhost:5000/uploads/${resource.filePath}`;
+
+const link=
+
+document.createElement("a");
+
+link.href=downloadUrl;
+
+link.download=resource.fileName;
+
+document.body.appendChild(link);
+
+link.click();
+
+document.body.removeChild(link);
+
+}
+
+catch(error){
+
+console.log(error);
+
+alert("Download failed");
+
+}
+
+}}
+
+>
+
+Download
+
+</button>
+            </div>
+
+          ))}
 
         </div>
-    );
+
+      )}
+
+    </div>
+
+  );
+
 }
 
 export default Dashboard;

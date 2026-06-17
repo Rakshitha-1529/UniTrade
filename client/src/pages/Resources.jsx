@@ -1,9 +1,13 @@
+import Dashboard from "./Dashboard";
+
 function Resources() {
-    return (
-        <div>
-            <h1>Resources</h1>
-        </div>
-    );
+
+  return (
+
+    <Dashboard />
+
+  );
+
 }
 
 export default Resources;
