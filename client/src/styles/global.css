@@ -1,12 +1,12 @@
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial, sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
-body{
-    background:#f4f6f8;
+body {
+  background: #f4f6f8;
 }
-h1{
-    padding:20px;
+h1 {
+  padding: 20px;
 }

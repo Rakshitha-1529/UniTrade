@@ -1,13 +1,7 @@
 import Dashboard from "./Dashboard";
 
 function Resources() {
-
-  return (
-
-    <Dashboard />
-
-  );
-
+  return <Dashboard />;
 }
 
 export default Resources;

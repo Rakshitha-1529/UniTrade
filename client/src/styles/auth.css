@@ -1,34 +1,33 @@
-.auth-container{
-    width:400px;
-    margin:50px auto;
-    background:white;
-    padding:30px;
-    border-radius:10px;
-    box-shadow:
-    0px 2px 10px rgba(0,0,0,0.1);
+.auth-container {
+  width: 400px;
+  margin: 50px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
 }
-.auth-container form{
-    display:flex;
-    flex-direction:column;
-    gap:15px;
+.auth-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
-.auth-container input{
-    padding:10px;
+.auth-container input {
+  padding: 10px;
 }
-.auth-container button{
-    padding:10px;
-    border:none;
-    background:#2d3e50;
-    color:white;
-    cursor:pointer;
+.auth-container button {
+  padding: 10px;
+  border: none;
+  background: #2d3e50;
+  color: white;
+  cursor: pointer;
 }
-select{
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
+select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
-input{
-    padding:10px;
-    border:1px solid #ccc;
-    border-radius:5px;
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }

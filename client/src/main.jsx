@@ -8,21 +8,12 @@ import { SearchProvider } from "./context/SearchContext";
 
 import "./styles/global.css";
 
-ReactDOM.createRoot(
-    document.getElementById("root")
-).render(
-
-    <React.StrictMode>
-
-        <AuthProvider>
-
-            <SearchProvider>
-
-                <App />
-
-            </SearchProvider>
-
-        </AuthProvider>
-
-    </React.StrictMode>
+ReactDOM.createRoot(document.getElementById("root")).render(
+  <React.StrictMode>
+    <AuthProvider>
+      <SearchProvider>
+        <App />
+      </SearchProvider>
+    </AuthProvider>
+  </React.StrictMode>,
 );

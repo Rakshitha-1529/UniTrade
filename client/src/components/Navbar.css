@@ -1,106 +1,97 @@
-.navbar{
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
+  padding: 16px 30px;
 
-    padding:12px 30px;
+  background: white;
 
-    background:white;
-
-    box-shadow:0 2px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.logo-section{
-
-    display:flex;
-    align-items:center;
-    gap:10px;
+.logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.logo{
-
-    width:55px;
-    height:55px;
-    object-fit:contain;
+.logo {
+  width: 55px;
+  height: 55px;
+  object-fit: contain;
 }
 
-.logo-section h2{
-
-    color:#2d3e50;
+.logo-section h2 {
+  color: #2d3e50;
+  font-size: 34px;
+  font-weight: 600;
 }
 
-.search-section{
-
-    display:flex;
-    gap:10px;
+.search-section {
+  display: flex;
+  gap: 10px;
+ 
 }
 
-.search-section input{
+.search-section input {
+  width: 350px;
 
-    width:350px;
+  padding: 10px;
+   font-size: 20px;
+  border: 1px solid #ccc;
 
-    padding:10px;
-
-    border:1px solid #ccc;
-
-    border-radius:5px;
+  border-radius: 5px;
 }
 
-.search-section select{
+.search-section select {
+  padding: 10px;
 
-    padding:10px;
-
-    border:1px solid #ccc;
-
-    border-radius:5px;
+  border: 1px solid #ccc;
+   font-size: 20px;
+  border-radius: 5px;
 }
 
-.nav-links{
-
-    display:flex;
-    gap:18px;
-    align-items:center;
+.nav-links {
+  display: flex;
+  gap: 18px;
+  align-items: center;
 }
 
-.nav-links a{
-
-    text-decoration:none;
-    color:#2d3e50;
-    font-weight:500;
+.nav-links a {
+  text-decoration: none;
+  font-size: 20px;
+  color: #2d3e50;
+  font-weight: 500;
 }
 
-.nav-links a:hover{
-
-    color:#0077ff;
+.nav-links a:hover {
+  color: #0077ff;
 }
 
-.logout-btn{
+.logout-btn {
+  padding: 8px 15px;
 
-    padding:8px 15px;
+  border: none;
 
-    border:none;
+  background: #ff4d4d;
 
-    background:#ff4d4d;
+  color: white;
 
-    color:white;
+  border-radius: 5px;
 
-    border-radius:5px;
-
-    cursor:pointer;
+  cursor: pointer;
 }
-.search-section input{
-
-    width:320px;
+.search-section input {
+  width: 320px;
 }
 
-.search-section{
+.search-section {
+  flex: 1;
 
-    flex:1;
+  display: flex;
 
-    display:flex;
+  justify-content: center;
 
-    justify-content:center;
-
-    gap:10px;
+  gap: 10px;
 }

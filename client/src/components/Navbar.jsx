@@ -5,124 +5,71 @@ import "./Navbar.css";
 import logo from "../assets/logo.jpeg";
 
 function Navbar() {
+  const navigate = useNavigate();
+  const { searchTerm, setSearchTerm, filter, setFilter } =
+    useContext(SearchContext);
 
-    const navigate = useNavigate();
-    const {
-        searchTerm,
-        setSearchTerm,
-        filter,
-        setFilter
-    } = useContext(SearchContext);
+  const logout = async () => {
+await fetch("http://localhost:5000/api/auth/logout", {
+method: "POST",
+credentials: "include"
+});
 
+navigate("/login");
+};
 
-    const logout = () => {
+  return (
+    <nav className="navbar">
+      {/* Logo Section */}
 
-    localStorage.removeItem("isLoggedIn");
+      <div className="logo-section">
+        <img src={logo} alt="UniTrade Logo" className="logo" />
 
-    localStorage.removeItem("user");
+        <h2>UniTrade</h2>
+      </div>
 
-    navigate("/login");
+      {/* Search */}
 
-    };
+      <div className="search-section">
+        <input
+          type="text"
+          placeholder="Search resources..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+        />
 
-    return (
+        <select value={filter} onChange={(e) => setFilter(e.target.value)}>
+          <option value="All">All</option>
 
-        <nav className="navbar">
+          <option value="Notes">Notes</option>
 
-            {/* Logo Section */}
+          <option value="Book">Book</option>
 
-            <div className="logo-section">
+          <option value="Assignment">Assignment</option>
 
-                <img
-                    src={logo}
-                    alt="UniTrade Logo"
-                    className="logo"
-                />
+          <option value="Question Paper">Question Paper</option>
+        </select>
+      </div>
 
-                <h2>UniTrade</h2>
+      {/* Navigation */}
 
-            </div>
+      <div className="nav-links">
+        <Link to="/">Dashboard</Link>
 
-            {/* Search */}
+        <Link to="/upload">Upload</Link>
 
-           <div className="search-section">
+        <Link to="/chat">Chat</Link>
 
-    <input
-        type="text"
-        placeholder="Search resources..."
-        value={searchTerm}
-        onChange={(e) =>
-            setSearchTerm(e.target.value)
-        }
-    />
+        <Link to="/notifications">Notifications</Link>
 
-    <select
-        value={filter}
-        onChange={(e) =>
-            setFilter(e.target.value)
-        }
-    >
+        <Link to="/profile">Profile</Link>
 
-        <option value="All">
-            All
-        </option>
-
-        <option value="Notes">
-            Notes
-        </option>
-
-        <option value="Book">
-            Book
-        </option>
-
-        <option value="Assignment">
-            Assignment
-        </option>
-
-        <option value="Question Paper">
-            Question Paper
-        </option>
-
-    </select>
-
-</div>
-
-            {/* Navigation */}
-
-            <div className="nav-links">
-
-                <Link to="/">
-                    Dashboard
-                </Link>
-
-                <Link to="/upload">
-                    Upload
-                </Link>
-
-                <Link to="/chat">
-                    Chat
-                </Link>
-
-                <Link to="/notifications">
-                    Notifications
-                </Link>
-
-                <Link to="/profile">
-                    Profile
-                </Link>
-
-                <button
-                    className="logout-btn"
-                    onClick={logout}
-                >
-                    Logout
-                </button>
-
-            </div>
-
-        </nav>
-
-    );
+        <button className="logout-btn" onClick={logout}>
+          Logout
+        </button>
+      </div>
+    </nav>
+  );
 }
 
 export default Navbar;
